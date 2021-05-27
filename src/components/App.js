@@ -3,7 +3,7 @@ import './App.css';
 import Web3 from 'web3';
 import Navbar from './Navbar'
 import Main from './Main'
-import SocialNetwork from '../abis/SocialNetwork.json'
+import Betting from '../abis/Betting.json'
 
 class App extends Component {
 
@@ -31,19 +31,11 @@ class App extends Component {
     this.setState({account : accounts[0]})
     const networkId = await web3.eth.net.getId()
     console.log(networkId)
-    const networkData = SocialNetwork.networks[networkId]
+    const networkData = Betting.networks[networkId]
     if(networkData) {
-      const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
-      this.setState({socialNetwork})
-      const postCount = await socialNetwork.methods.postCount().call()
-      this.setState({postCount})
-      for(var i = 1; i <= postCount; i++) {
-        const post = await socialNetwork.methods.posts(i).call()
-        this.setState({
-          posts : [...this.state.posts, post]
-        })
-      }
-      this.setState({loading : false})
+      const betting = web3.eth.Contract(Betting.abi, networkData.address)
+      this.setState({betting})
+      
     } else {
       window.alert("no contract deployed")
     }
